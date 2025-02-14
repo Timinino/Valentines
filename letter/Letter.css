@@ -1,0 +1,262 @@
+body{
+    padding: 0;
+    margin: 0;
+    background-color: rgb(200,162,200);
+}
+
+:root{
+  --primary: rgb(245, 227, 192);
+  --bg-color: rgb(5, 53, 61);
+  --bg-envelope-color: #f5edd1;
+  --envelope-tab: #ecdeb8;
+  --envelope-cover: #e6cfa7;
+  --shadow-color: rgba(0, 0, 0, 0.2);
+  --txt-color: #444;
+  --heart-color: rgb(243, 52, 52);
+}
+
+.hearts-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none; /* Allows clicks to pass through the hearts to underlying elements */
+  z-index: 10;
+}
+
+.hearts {
+  position: absolute;
+  width: 5vw;
+  height: auto;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 50px;
+  font-family: Arial, sans-serif;
+}
+
+
+.header{
+  width: fit-content;
+  height: fit-content;
+  margin: auto;
+  margin-top: 5%;
+  text-align: center;
+  display: block;
+}
+
+.headerText {
+    position: relative;
+    height: fit-content;
+    width: fit-content;
+    margin: auto;
+    margin-top: 10%;
+    font-size: 3rem;
+    color: rgb(212, 70, 70);
+    animation: h1 2s infinite alternate;
+}
+
+.backButton{
+  text-decoration: underline;
+  color: rgb(212, 70, 70);
+  font-size: x-large;
+  border-radius: 15%;
+  transition: .2s;
+}
+
+.backButton:hover{
+  text-decoration: none;
+  color: rgb(212, 70, 70);
+  transition: .2s;
+  background-color: rgba(212, 70, 70, 0.24);
+}
+
+.letterInstructions{
+  color: rgb(212, 70, 70);
+  font-size: 125%;
+}
+
+.container {
+  height: 55vh;
+  display: grid;
+  place-items: center;
+}
+.container > .envelope-wrapper {
+  position: relative;
+  background: var(--bg-envelope-color);
+  box-shadow: 0 0 40px var(--shadow-color);
+}
+.envelope-wrapper > .envelope {
+  position: relative;
+  width: 300px;
+  height: 230px;
+}
+.envelope-wrapper > .envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  border-top: 130px solid var(--envelope-tab);
+  border-right: 150px solid transparent;
+  border-left: 150px solid transparent;
+  transform-origin: top;
+  transition: all 0.5s ease-in-out 0.7s;
+}
+.envelope-wrapper > .envelope::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  width: 0px;
+  height: 0px;
+  border-top: 130px solid transparent;
+  border-right: 150px solid var(--envelope-cover);
+  border-bottom: 100px solid var(--envelope-cover);
+  border-left: 150px solid var(--envelope-cover);
+}
+.envelope > .letter {
+  position: absolute;
+  right: 20%;
+  bottom: 0;
+  width: 54%;
+  height: 80%;
+  background: var(--primary);
+  text-align: center;
+  transition: all 1s ease-in-out;
+  box-shadow: 0 0 5px var(--shadow-color);
+  padding: 20px 10px;
+}
+
+.envelope > .letter > .text {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: var(--txt-color);
+  text-align: center;
+  font-size: 10px;
+}
+.heart {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  background: var(--heart-color);
+  z-index: 4;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transition: transform 0.5s ease-in-out 1s;
+  box-shadow: 0 1px 6px var(--shadow-color);
+  cursor: pointer;
+}
+
+.heart:before, 
+.heart:after {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: var(--heart-color);
+  border-radius: 50%;
+}
+.heart:before {
+  top: -7.5px;
+}
+.heart:after {
+  right: 7.5px;
+}
+.flap > .envelope:before {
+  transform: rotateX(180deg);
+  z-index: 0;
+}
+.flap > .envelope > .letter {
+  bottom: 100px;
+  transform: scale(1.5);
+  transition-delay: 1s;
+}
+.flap > .heart {
+  transform: rotate(90deg);
+  transition-delay: 0.4s;
+}
+
+.modal {
+  display: none; /* Hidden initially */
+  position: fixed;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8); /* Initially smaller */
+  background-color: rgb(245, 227, 192);
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  border-radius: 10px;
+  width: 25%;  /* Fixed width */
+  height: fit-content;  /* Taller height for vertical rectangle */
+  z-index: 1000; /* Make sure the modal is above the envelope */
+  opacity: 0;  /* Initially hidden (transparent) */
+  transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* Smooth scaling and fading effect */
+}
+
+.modal.show {
+  opacity: 1;  /* Fade in */
+  transform: translate(-50%, -50%) scale(1); /* Scale to normal size */
+}
+
+.modalText{
+  font-size: 100%;
+  font-family: 'Winter', sans-serif;
+}
+
+.modal button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  border: none;
+  background: #ff6666;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+
+@media (max-width:800px){
+  .modal {
+    display: none; /* Hidden initially */
+    position: fixed;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8); /* Initially smaller */
+    background-color: rgb(245, 227, 192);
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border-radius: 10px;
+    width: 85%;  /* Fixed width */
+    height: fit-content;  /* Taller height for vertical rectangle */
+    z-index: 1000; /* Make sure the modal is above the envelope */
+    opacity: 0;  /* Initially hidden (transparent) */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* Smooth scaling and fading effect */
+  }  
+
+  .modalText{
+    font-size: 90%;
+  }
+}
+
+@keyframes h1 {
+    0% {
+      text-shadow: 0 0 4rem #ff000081, 0 0 20px #ff00007a, 0 0 30px #ff00007e, 0 0 40px #ff00008a;
+    }
+    50% {
+      text-shadow: 0 0 4rem #f853538c, 0 0 20px #f853538c, 0 0 30px #f853538c, 0 0 40px #f853538c;
+    }
+    100% {
+      text-shadow: 0 0 4rem #ff006281, 0 0 20px #ff006281, 0 0 30px #ff006281, 0 0 40px #ff006281;
+    }
+}
